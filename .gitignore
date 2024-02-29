@@ -1,2 +1,3 @@
 .vscode
 *.hs
+!modules/*.hs
