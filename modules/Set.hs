@@ -1,6 +1,6 @@
 module Set
   ( Set,
-    member,
+    isMember,
     insert,
     -- delete,
     -- union,
@@ -16,10 +16,11 @@ where
 data Set a
   = Empty -- Conjunto vazio
   | Node a (Set a) (Set a) -- Elemento, sub-conjuntos do menores e sub-conjunto dos maiores
+  deriving (Eq, Show)
 
-member :: (Ord a) => a -> Set a -> Bool
-member x Empty = False
-member x (Node y left right)
+isMember :: (Ord a) => a -> Set a -> Bool
+isMember x Empty = False
+isMember x (Node y left right)
   | x == y = True
   | x > y = member x right
   | x < y = member x left

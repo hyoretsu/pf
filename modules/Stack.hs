@@ -1,21 +1,23 @@
-module Stack (Stack, push, pop, top, empty, isEmpty) where
+module Stack where
 
-newtype Stack a = Stk [a] -- Using arrays
+data Stack a = Empty | Stk [a]
+  deriving (Eq, Show)
 
 push :: a -> Stack a -> Stack a
+push x Empty = Stk [x]
 push x (Stk xs) = Stk (x : xs)
 
 pop :: Stack a -> Stack a
+pop Empty = error "Stack.pop: empty stack"
 pop (Stk (_ : xs)) = Stk xs
-pop _ = error "Stack.pop: empty stack"
 
 top :: Stack a -> a
+top Empty = error "Stack.top: empty stack"
 top (Stk (x : _)) = x
-top _ = error "Stack.top: empty stack"
 
-empty :: Stack a
-empty = Stk []
+empty :: Stack a -> Stack a
+empty _ = Stk []
 
 isEmpty :: Stack a -> Bool
+isEmpty Empty = False
 isEmpty (Stk []) = True
-isEmpty (Stk _) = False
