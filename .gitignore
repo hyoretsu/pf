@@ -1,3 +1,4 @@
 .vscode
 *.hs
 !modules/*.hs
+!prova2.hs
