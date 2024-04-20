@@ -1,4 +1,8 @@
 .vscode
-*.hs
+*.o
+*.hi
+a.hs
+./Main.hs
 !modules/*.hs
 !prova2.hs
+tmp
