@@ -5,6 +5,8 @@ import System.Exit (exitSuccess)
 import System.Random (randomRIO)
 import Text.Printf (printf)
 
+type Coord = (Int, Int)
+
 type Line = [Int]
 
 type Grid = [Line]
@@ -18,16 +20,15 @@ start = do
   let board = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]
   board <- genNewTile board
   board <- genNewTile board
-  printBoard board 1
   gameLoop board 1
 
 genNewTile :: Grid -> IO Grid
 genNewTile board = do
   x <- randomRIO (0, 3)
   y <- randomRIO (0, 3)
-  if board !! x !! y /= 0 then genNewTile board else updateBoard board (x, y) 8
+  if board !! x !! y /= 0 then genNewTile board else updateBoard board (x, y) 2
 
-updateBoard :: Grid -> (Int, Int) -> Int -> IO Grid
+updateBoard :: Grid -> Coord -> Int -> IO Grid
 updateBoard board (i, j) num =
   let (upperRows, lowerRows) = splitAt i board
       (leftCells, rightCells) = splitAt j (head lowerRows)
@@ -39,7 +40,7 @@ printBoard (line : rest) size = do
   size <- printLine line size
   printBoard rest size
 
-printLine :: [Int] -> Int -> IO Int
+printLine :: Line -> Int -> IO Int
 printLine nums size = do
   let maxNumber = maximum nums
   let newSize
@@ -58,6 +59,8 @@ gameLoop board tileSize = do
     putStrLn "Você venceu!"
     exitSuccess
 
+  tileSize <- printBoard board tileSize
+
   putStrLn "Escolha um movimento (C, D, E, B): "
   line <- getLine
   let action = toUpper (head line)
@@ -65,8 +68,6 @@ gameLoop board tileSize = do
 
   board <- move board action
   board <- genNewTile board
-
-  tileSize <- printBoard board tileSize
 
   gameLoop board tileSize
 
